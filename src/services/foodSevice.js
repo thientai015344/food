@@ -20,17 +20,15 @@ let hashUserPasswords = (password) => {
 
 
 
-let handleUserLogin = (username, password) =>{
-
-
+let handleUserLogin = (foodname, password) =>{
     return new Promise(async(resolve, reject) =>{
         try {
             let userData ={};
 
-            let isExist = await checkUsername(username);
+            let isExist = await checkfoodname(foodname);
             if(isExist) {
                 let user = await db.user.findOne({
-                    where: {username: username},
+                    where: {foodname: foodname},
                     attributes: ['id', 'roleId', 'password'],
                     raw: true
 
@@ -59,7 +57,7 @@ let handleUserLogin = (username, password) =>{
             else{
 
                 userData.errCode = 1;
-                userData.errMessage =`Your's username isn't exist your system. please try other username !`;
+                userData.errMessage =`Your's foodname isn't exist your system. please try other foodname !`;
               
             }
             resolve(userData);
@@ -72,11 +70,11 @@ let handleUserLogin = (username, password) =>{
 }
 
 
-let checkUsername = (username) => {
+let checkfoodname = (foodname) => {
     return new Promise(async(resolve, reject) =>{
         try {
             let user = await db.user.findOne({
-              where: { username: username}
+              where: { foodname: foodname}
             })
             if(user){
                 resolve(true);
@@ -92,34 +90,25 @@ let checkUsername = (username) => {
 }
 
 
-let getAllUsers = (userId) => {
+let getAllfoods = (foodId) => {
 
     return new Promise(async(resolve, reject) =>{
         try {
-            let users = '';
-            if(userId === 'ALL') {
+            let foods = '';
+            if(foodId === 'ALL') {
 
-                users = await db.user.findAll({
-
-                    attributes:{
-                        exclude: ['password'],
-                    }
-
-                });
+                foods = await db.foods.findAll();
          
 
             }
             
-            if(userId && userId !== 'ALL') {
-                users = await db.user.findOne({
-                    where:{id : userId},
-                    attributes:{
-                        exclude: ['password'],
-                    }
+            if(foodId && foodId !== 'ALL') {
+                foods = await db.user.findOne({
+                    where:{id : foodId},
                 })
                    
             }
-            resolve(users);
+            resolve(foods);
         
         } catch (error) {
             reject(error);     
@@ -128,15 +117,15 @@ let getAllUsers = (userId) => {
     
 }
    
-let CreateNewUser = (data) =>{
+let CreateNewfood = (data) =>{
     return new Promise(async(resolve, reject) =>{
         try {
-            let check = await checkUsername(data.username);
+            let check = await checkfoodname(data.foodname);
             if(check==true){
                 
                 resolve({
                     errCode : 1, 
-                    errMessage: 'this username is already in used, plz try anothe username'
+                    errMessage: 'this foodname is already in used, plz try anothe foodname'
                 })
                 
             }else{
@@ -144,8 +133,7 @@ let CreateNewUser = (data) =>{
                 
                 await db.user.create({
     
-                    username: data.username,
-                    password: hashPasswordFromBcrypt,
+                    foodname: data.foodname,
                     email: data.email,
                     phonenumber: data.phonenumber,
                     roleId: data.roleId,
@@ -207,13 +195,13 @@ let updateUserData = (data) => {
                 raw : false
             })
             if(user) {
-                user.username = data.username,
+                user.foodname = data.foodname,
                 user.email = data.email,
                 user.phonenumber = data.phonenumber,
                 user.interfaceName = data.interfaceName,
                 user.avata = data.avatasinger,
                 await user.save();
-                    // sername = data.username,
+                    // sername = data.foodname,
                     // mail = data.email,
                     // phonenumber = data.phonenumber,
 
@@ -254,9 +242,8 @@ let updateUserData = (data) => {
 
 
 module.exports = {
-    handleUserLogin: handleUserLogin,
-    getAllUsers: getAllUsers,
-    CreateNewUser: CreateNewUser,
+    getAllfoods: getAllfoods,
+    CreateNewfood: CreateNewfood,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
 }

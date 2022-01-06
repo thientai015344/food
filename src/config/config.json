@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "Thientai01292@",
-    "database": "music",
+    "database": "restaurant",
     "host": "localhost",
     "dialect": "mysql",
     "logging": false,
