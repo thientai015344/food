@@ -2,6 +2,8 @@ import express from 'express';
 
 import userController from '../controllers/userController'
 import foodController from '../controllers/foodController'
+import tableController from '../controllers/tableController'
+
 
 
 let router = express.Router();
@@ -24,7 +26,14 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-food', foodController.handleEditfood);
     router.delete('/api/delete-food', foodController.handleDeletefood);
 
+
+    
+    router.get('/api/get-all-table',tableController.handleGetAlltable);
+    router.post('/api/create-new-table',tableController.handleCreateNewtable);
+    router.put('/api/edit-table', tableController.handleEdittable);
+    router.delete('/api/delete-table', tableController.handleDeletetable);
+
      
     app.use("/", router)
 }
-module.exports = initWebRoutes;
+module.exports = initWebRoutes;  

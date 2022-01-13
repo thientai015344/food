@@ -10,12 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     ////fghfg
+      areas.belongsTo(models.tables,{foreignKey: "tableId",});
     }
   };
   areas.init({
-    // 
-    // loai area
+   
     areaname: DataTypes.STRING,
     typeerea: DataTypes.STRING,
    

@@ -10,13 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     ////fghfg
+      oder.belongsTo(models.user,{foreignKey: "userId",});
+      oder.belongsTo(models.tables,{foreignKey: "tableId",});
+      oder.belongsTo(models.foods,{foreignKey: "foodId",});     
     }
   };
   oder.init({
     userId: DataTypes.INTEGER,
+    quantity: DataTypes.STRING,
+    price: DataTypes.STRING,
     tableId: DataTypes.INTEGER,
-    ctorderId: DataTypes.INTEGER,
+    foodId: DataTypes.INTEGER,
+    
     
   }, {
     sequelize,

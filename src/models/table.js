@@ -10,16 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     ////fghfg
+      tables.belongsTo(models.areas,{foreignKey: "tableId",});
     }
   };
   tables.init({
-
-    numbertable: DataTypes.STRING,
-    typetable: DataTypes.STRING,
     areaId: DataTypes.INTEGER,
-
-   
+    numbertable: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'tables',

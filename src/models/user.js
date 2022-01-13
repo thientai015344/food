@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     ////fghfg
+      user.belongsTo(models.oder,{foreignKey: "userId",});
     }
   };
   user.init({

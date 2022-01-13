@@ -21,7 +21,7 @@ let hashUserPasswords = (password) => {
 
 
 let handleUserLogin = (username, password) =>{
-
+console.log('use', username, 'pass',password);
 
     return new Promise(async(resolve, reject) =>{
         try {
@@ -31,7 +31,7 @@ let handleUserLogin = (username, password) =>{
             if(isExist) {
                 let user = await db.user.findOne({
                     where: {username: username},
-                    attributes: ['id', 'roleId', 'password'],
+                    attributes: ['id', 'roleId', 'username','password','interfaceName', 'avata'],
                     raw: true
 
                 });
@@ -40,7 +40,7 @@ let handleUserLogin = (username, password) =>{
                     if(check){
                      
                         userData.errCode = 0;
-                        userData.errMessage = 'Ok';
+                    
                         delete user.password;
                         userData.user = user;
                         

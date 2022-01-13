@@ -1,12 +1,12 @@
 import db from '../models'
 
-let checkfoodname = (foodname) => {
+let checknumbertable = (numbertable) => {
     return new Promise(async(resolve, reject) =>{
         try {
-            let food = await db.foods.findOne({
-              where: { foodname: foodname}
+            let table = await db.tables.findOne({
+              where: { numbertable: numbertable}
             })
-            if(food){
+            if(table){
                 resolve(true);
             }
             else{
@@ -20,29 +20,31 @@ let checkfoodname = (foodname) => {
 }
 
 
-let getAllfoods = (foodId) => {
+let getAlltables = (tableId) => {
 
     return new Promise(async(resolve, reject) =>{
         try {
-            let foods = '';
-            if(foodId === 'ALL') {
+            let tables = '';
+            if(tableId === 'ALL') {
 
-                foods = await db.foods.findAll({
-                    
-                    attributes: ['id', 'foodname', 'price', 'description', 'imgfood'],
-                    raw: true
+                tables = await db.tables.findAll({
+
+                    attributes: ['id', 'numbertable',],
+                        raw: true
+
                 });
-         
 
             }
             
-            if(foodId && foodId !== 'ALL') {
-                foods = await db.foods.findOne({
-                    where:{id : foodId},
+            if(tableId && tableId !== 'ALL') {
+                tables = await db.tables.findOne({
+                    where:{id : tableId},
+                    attributes: ['id', 'numbertable',],
+                    raw: true
                 })
                    
             }
-            resolve(foods);
+            resolve(tables);
         
         } catch (error) {
             reject(error);     
@@ -51,25 +53,23 @@ let getAllfoods = (foodId) => {
     
 }
    
-let CreateNewfood = (data) =>{
+let CreateNewtable = (data) =>{
     return new Promise(async(resolve, reject) =>{
         try {
-            let check = await checkfoodname(data.foodname);
+            let check = await checknumbertable(data.numbertable);
             if(check==true){
                 
                 resolve({
                     errCode : 1, 
-                    errMessage: 'this foodname is already in used, plz try anothe foodname'
+                    errMessage: 'this numbertable is already in used, plz try another numbertable'
                 })
                 
             }else{
-               
-                await db.foods.create({
-
-                    foodname: data.foodname,
-                    price: data.price,
-                    description: data.description,
-                    imgfood: data.imgfood,
+                
+                await db.tables.create({
+    
+                    numbertable: data.numbertable,
+                   
                 })
     
                 resolve({
@@ -85,19 +85,19 @@ let CreateNewfood = (data) =>{
     })
 }
 
-let deletefood = (id) => {
+let deletetable = (id) => {
     return new Promise(async(resolve, reject) => {
-        let food = await db.foods.findOne({
+        let table = await db.tables.findOne({
             where: { id: id}
         })
-        if(!food){
+        if(!table){
             resolve ({ 
                 errCode: 2,
-                errMessage : `The food isn't exist`
+                errMessage : `The table isn't exist`
             })
         }
-       // awaxit food.destroy();
-       await db.foods.destroy({
+       // awaxit table.destroy();
+       await db.table.destroy({
            where: { id: id}
        });
         
@@ -113,7 +113,7 @@ let deletefood = (id) => {
 
 }
 
-let updatefoodData = (data) => {
+let updatetableData = (data) => {
 
     return new Promise(async(resolve, reject) => {
         try {
@@ -123,32 +123,25 @@ let updatefoodData = (data) => {
                     errMessage:'missing required data'
                 })
             }
-            let food  = await db.foods.findOne({ 
+            let table  = await db.tables.findOne({ 
                 where : {id : data.id},
                 raw : false
             })
-            if(food) {
-                food.foodname = data.foodname,
-                food.email = data.email,
-                food.phonenumber = data.phonenumber,
-                food.interfaceName = data.interfaceName,
-                food.avata = data.avatasinger,
-                await food.save();
-                    // sername = data.foodname,
+            if(table) {
+                table.numbertable = data.numbertable,        
+                await table.save();
+                    // sername = data.numbertable,
                     // mail = data.email,
                     // phonenumber = data.phonenumber,
 
                // });
-                resolve({
-                    errCode: 0,
-                    message:'updata successfully',
-                })
+               
                
             } else{
                 resolve(
                     {
                         errCode: 1,
-                        errMessage: `food's not found`
+                        errMessage: `table's not found`
                     }
                 );
             }
@@ -162,11 +155,21 @@ let updatefoodData = (data) => {
 
 }
 
- 
+    
+    
+
+
+
+
+
+
+
+
+
 
 module.exports = {
-    getAllfoods: getAllfoods,
-    CreateNewfood: CreateNewfood,
-    deletefood: deletefood,
-    updatefoodData: updatefoodData,
+    getAlltables: getAlltables,
+    CreateNewtable: CreateNewtable,
+    deletetable: deletetable,
+    updatetableData: updatetableData,
 }
